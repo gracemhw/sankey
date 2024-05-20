@@ -1,0 +1,31 @@
+---
+title: "sankey-plot"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sankey-plot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library("sankey")
+```
+
+```{r}
+# Example data
+strokedata <- read.csv("../data/extdata/strokedata.csv")
+dd <- strokedata[c(1:5, 5), c(1:6, 5)]
+dd[6, "factors"] <- "Random"
+names(dd)[7] <- 2015
+names(dd)[1] <- "Type"
+plot_sankey(dd,
+            title = "Risk Factors for Stroke in Blacks",
+            xgap = 0.5, ygap = .005)
+```
