@@ -19,6 +19,7 @@ add_ribbon_columns <- function(x, gap) {
   x
 }
 
+#' @importFrom utils head tail
 duplicate_lag <- function(x, timegap) {
   x2 <- x
   x2$time <- stats::ave(x2$time, x2[[1]], FUN = function(x) {
@@ -27,6 +28,7 @@ duplicate_lag <- function(x, timegap) {
   x2
 }
 
+utils::globalVariables(c("gp", "time", "ypos", "value"))
 get_labels <- function(x, x2) {
   out <- data.frame(
     gp = x[[1]],
@@ -50,24 +52,42 @@ my_palette <- function(n) {
   }
 }
 
+utils::globalVariables(c("yup", "ydown", "value", "gp"))
 #' Sankey Plot
-#' @importFrom ggplot2 element_blank aes
+#'
+#' Create a Sankey plot using [ggplot2]
+#'
+#' This function creates a Sankey plot from a data frame with two columns
+#' (x and y) and one column for the group (gp).
+#'
+#' @param dat A data frame in wide format with the first column being the
+#'   different categories, and the remaining columns showing different time
+#'   points.
+#' @param title The title of the plot
+#' @param timeslope The width of the slope between each time point (should be > 0)
+#' @param hspace The thickness of the gap between the ribbons (the horizontal white spaces)
+#' @param vspace Whether or not to include vertical white spaces
+#' @param digits The number of decimal places to round the values to
+#' @return A [`ggplot2::ggplot2`] object
+#'
+#' @importFrom ggplot2 element_blank element_text aes
 #' @export
-plot_sankey <- function(dat, title = NULL, ygap = .03, xgap = 1,
-                        digits = 2) {
+plot_sankey <- function(dat, title = NULL, timeslope = 1, hspace = .03,
+                        vspace = TRUE, digits = 2) {
   # 1. Convert to long data, and add ribbon coordinates
   xlong <- add_ribbon_columns(
     to_long(dat),
-    gap = ygap
+    gap = hspace
   )
   # 2. A duplicated data set (for positioning the labels)
-  x2 <- duplicate_lag(xlong, timegap = xgap)
+  x2 <- duplicate_lag(xlong, timegap = timeslope)
   # 3. Obtain labels
   labels <- get_labels(xlong, x2)
   # 4. Plot
   ggplot2::ggplot(rbind(xlong, x2), aes(x = time, fill = gp)) +
     ggplot2::geom_ribbon(aes(ymin = ydown, ymax = yup)) +
-    ggplot2::geom_vline(aes(xintercept = time), color = "white") +
+    ggplot2::geom_vline(aes(xintercept = time), color = "white",
+                        alpha = as.integer(vspace)) +
     ggplot2::geom_label(data = labels$label_df,
                         aes(y = ypos,
                             label = formatC(value, digits = digits,
@@ -82,7 +102,8 @@ plot_sankey <- function(dat, title = NULL, ygap = .03, xgap = 1,
                                 breaks = labels$ybreaks,
                                 labels = names(labels$ybreaks)) +
     ggplot2::scale_fill_manual(values = my_palette(length(labels$ybreaks))) +
-    ggplot2::theme(axis.ticks.x = element_blank(), # remove x axis ticks
+    ggplot2::theme(plot.title = element_text(hjust = 0.4),
+                   axis.ticks.x = element_blank(), # remove x axis ticks
                    axis.ticks.y = element_blank(),
                    axis.title = element_blank(), # remove axis titles
                    panel.background = element_blank(), # remove background
