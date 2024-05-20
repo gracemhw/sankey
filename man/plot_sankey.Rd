@@ -4,8 +4,37 @@
 \alias{plot_sankey}
 \title{Sankey Plot}
 \usage{
-plot_sankey(dat, title = NULL, ygap = 0.03, xgap = 1, digits = 2)
+plot_sankey(
+  dat,
+  title = NULL,
+  timeslope = 1,
+  hspace = 0.03,
+  vspace = TRUE,
+  digits = 2
+)
+}
+\arguments{
+\item{dat}{A data frame in wide format with the first column being the
+different categories, and the remaining columns showing different time
+points.}
+
+\item{title}{The title of the plot}
+
+\item{timeslope}{The width of the slope between each time point (should be > 0)}
+
+\item{hspace}{The thickness of the gap between the ribbons (the horizontal white spaces)}
+
+\item{vspace}{Whether or not to include vertical white spaces}
+
+\item{digits}{The number of decimal places to round the values to}
+}
+\value{
+A \code{\link[ggplot2:ggplot2-package]{ggplot2::ggplot2}} object
 }
 \description{
-Sankey Plot
+Create a Sankey plot using \link{ggplot2}
+}
+\details{
+This function creates a Sankey plot from a data frame with two columns
+(x and y) and one column for the group (gp).
 }

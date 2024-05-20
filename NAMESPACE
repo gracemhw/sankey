@@ -3,3 +3,6 @@
 export(plot_sankey)
 importFrom(ggplot2,aes)
 importFrom(ggplot2,element_blank)
+importFrom(ggplot2,element_text)
+importFrom(utils,head)
+importFrom(utils,tail)
