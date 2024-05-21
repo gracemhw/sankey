@@ -1,6 +1,9 @@
 ---
 title: "sankey-plot"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    fig_width: 5
+    fig_height: 5
 vignette: >
   %\VignetteIndexEntry{sankey-plot}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,12 +23,28 @@ library("sankey")
 
 ```{r}
 # Example data
-strokedata <- read.csv("../data/extdata/strokedata.csv")
-dd <- strokedata[c(1:5, 5), c(1:6, 5)]
-dd[6, "factors"] <- "Random"
-names(dd)[7] <- 2015
-names(dd)[1] <- "Type"
-plot_sankey(dd,
+strokedata <- read.csv(
+  system.file("extdata", "strokedata.csv", package = "sankey")
+)
+
+# Scenario 1: With both horizontal and vertical white space
+plot_sankey(strokedata,
             title = "Risk Factors for Stroke in Blacks",
-            xgap = 0.5, ygap = .005)
+            timeslope = 1, hspace = 0.03, vspace = TRUE)
+
+
+# Scenario 2: With horizontal white space only
+plot_sankey(strokedata,
+            title = "Risk Factors for Stroke in Blacks",
+            timeslope = 1, hspace = 0.03, vspace = FALSE)
+
+# Scenario 3: With vertical white space only
+plot_sankey(strokedata,
+            title = "Risk Factors for Stroke in Blacks",
+            timeslope = 1, hspace = 0, vspace = TRUE)
+
+# Scenario 4: No horizontal and vertical white space
+plot_sankey(strokedata,
+            title = "Risk Factors for Stroke in Blacks",
+            timeslope = 1, hspace = 0, vspace = FALSE)
 ```

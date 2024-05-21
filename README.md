@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `sankey` is to …
+The goal of `sankey` is to create Sankey diagrams that shows changes of
+multiple factors across time based on summary statistics.
 
 ## Installation
 
