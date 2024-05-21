@@ -22,11 +22,10 @@ The goal of `sankey` is to create Sankey diagrams that shows changes of multiple
 
 ## Installation
 
-You can install the development version of `sankey` from [GitHub](https://github.com/) with:
+You can install the development version of `sankey` from [GitHub](https://github.com/gracemhw/sankey) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("gracemhw/sankey")
+remotes::install_github("gracemhw/sankey")
 ```
 
 ## Example

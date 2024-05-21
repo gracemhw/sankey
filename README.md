@@ -12,11 +12,10 @@ multiple factors across time based on summary statistics.
 ## Installation
 
 You can install the development version of `sankey` from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/gracemhw/sankey) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("gracemhw/sankey")
+remotes::install_github("gracemhw/sankey")
 ```
 
 ## Example
